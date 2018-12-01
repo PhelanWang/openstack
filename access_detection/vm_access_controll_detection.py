@@ -34,25 +34,28 @@ def umount_disk():
 # 使用linux命令虚拟机磁盘，然后返回根目录下的文件的访问控制权限
 def list_access_controll(args):
     mount_disk(args)
-    result = ''.join(os.popen("ls -lh / | awk '{print $1,$3,$4,$9}'").readlines()[1:])
+    result = ''.join(os.popen("ls -lh /mnt | awk '{print $1,$3,$4,$9}'").readlines()[1:])
     umount_disk()
     return result
 
 
 # 获取虚拟机的版本信息
 def get_vm_infor(args):
-    mount_disk(args)
-    result = '虚拟机系统内核名称: '
-    kernal_name = os.popen('/mnt/bin/uname -s').read()
-    result += kernal_name
-    result += '虚拟机主机名称: '
-    result += os.popen('/mnt/bin/uname -n').read()
-    result += '虚拟机内核发行号: '
-    version = os.popen('/mnt/bin/uname -r').read()
-    result += version
-    result += '虚拟机架构: '
-    result += os.popen('/mnt/bin/uname -i').read()
-    result += '虚拟机操作系统版本: '
-    result += os.popen('cat /mnt/etc/issue').read()
-    umount_disk()
-    return result, version.split('-')[0]
+    try:
+        mount_disk(args)
+        result = '虚拟机系统内核名称: '
+        kernal_name = os.popen('/mnt/bin/uname -s').read()
+        result += kernal_name
+        result += '虚拟机主机名称: '
+        result += os.popen('/mnt/bin/uname -n').read()
+        result += '虚拟机内核发行号: '
+        version = os.popen('/mnt/bin/uname -r').read()
+        result += version
+        result += '虚拟机架构: '
+        result += os.popen('/mnt/bin/uname -i').read()
+        result += '虚拟机操作系统版本: '
+        result += os.popen('cat /mnt/etc/issue').read()
+        umount_disk()
+        return result, version.split('-')[0]
+    except:
+        return None, None

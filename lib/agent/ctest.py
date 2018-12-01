@@ -6,7 +6,7 @@ from ConfigParser import ConfigParser
 from lib.sqlite.connection import connection
 from lib.utility import now, post_url, put_url, SimpleThread, global_wrapper, print_exception, register_api_resources, getip
 from json import dumps, loads
-from host_info import find_all_disk, get_default_disk
+from host_info import find_all_disk, get_default_disk, get_openstack_disk
 agent_version = None
 remote_base_url = None
 server_port = None
@@ -423,7 +423,7 @@ class SwitchAgent:
             # 暂时不用
             # self.post_ip()
             # self.post_host_info()
-            post_url('%s/initRegister' % remote_base_url, payload=get_default_disk())
+            post_url('%s/initRegister' % remote_base_url, payload=get_openstack_disk())
 
             self.app.run(host='0.0.0.0',
                          port=self.agent_port,

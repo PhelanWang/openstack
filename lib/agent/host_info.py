@@ -53,6 +53,22 @@ def find_all_disk():
     vdisk = {'disk': [vdisk, get_host_ip(), 9099]}
     return vdisk
 
+def get_openstack_disk():
+    import os, json
+    vdisk = []
+    disks = os.popen("lvscan | grep /dev/cinder-volumes/volume- | awk '{print $2}'").readlines()
+    for disk in disks:
+        print '+', 'disk:', disk, '+'
+        disk_path = disk.strip('\n\'')
+        disk_id = '-'.join(disk.split('/')[-1].split('-')[1:])
+        vdisk.append([disk_id, disk_id, 'other', 'x86_64',
+                      [disk_id, disk_id, disk_id, disk_id, disk_path,
+                       get_host_ip(), disk_path]])
+
+    vdisk = {'disk': [vdisk, get_host_ip(), 9099]}
+    print vdisk
+    return vdisk
+
 def get_default_disk():
     vdisk = {'disk':
      [
@@ -79,7 +95,7 @@ def get_default_disk():
 
 
 if __name__ == '__main__':
-    print find_all_disk()
+    print get_openstack_disk()
 
 {'disk':
     [
