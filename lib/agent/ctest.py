@@ -229,7 +229,7 @@ class TaskRequest:
         if json_data:
             payload['json_data'] = dumps(json_data)
 #         post_url('%s/switch/report' % remote_base_url, payload)
-            post_url('%s/reportReturn' % remote_base_url, payload)
+            post_url('%s/openStack/reportReturn' % remote_base_url, payload)
             
 
     @staticmethod
@@ -423,7 +423,7 @@ class SwitchAgent:
             # 暂时不用
             # self.post_ip()
             # self.post_host_info()
-            post_url('%s/initRegister' % remote_base_url, payload=get_openstack_disk())
+            post_url('%s/openStack/initRegister' % remote_base_url, payload=get_openstack_disk())
 
             self.app.run(host='0.0.0.0',
                          port=self.agent_port,
